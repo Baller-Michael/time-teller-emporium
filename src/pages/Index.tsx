@@ -3,17 +3,12 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import FilterBar from "@/components/FilterBar";
 import WatchCard from "@/components/WatchCard";
-import WatchDialog from "@/components/WatchDialog";
-import { watches, categories, Watch } from "@/data/watches";
-import { useToast } from "@/hooks/use-toast";
+import { watches, categories } from "@/data/watches";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
-  const [selectedWatch, setSelectedWatch] = useState<Watch | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
 
   // Filter and sort watches
   const filteredAndSortedWatches = useMemo(() => {
@@ -53,23 +48,10 @@ const Index = () => {
     setSearchQuery("");
   };
 
-  const handleWatchClick = (watch: Watch) => {
-    setSelectedWatch(watch);
-    setIsDialogOpen(true);
-  };
-
-  const handleNavigate = (section: string) => {
-    toast({
-      title: `${section.charAt(0).toUpperCase() + section.slice(1)} Section`,
-      description: `Navigating to ${section} page - Coming soon!`,
-    });
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header 
         onSearchChange={setSearchQuery}
-        onNavigate={handleNavigate}
       />
       
       <Hero />
@@ -115,7 +97,6 @@ const Index = () => {
                 category={watch.category}
                 isNew={watch.isNew}
                 isOnSale={watch.isOnSale}
-                onClick={() => handleWatchClick(watch)}
               />
             ))}
           </div>
@@ -163,12 +144,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-
-      <WatchDialog 
-        watch={selectedWatch}
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-      />
     </div>
   );
 };
