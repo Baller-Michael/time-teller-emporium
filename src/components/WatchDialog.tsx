@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Heart, ShoppingCart } from "lucide-react";
 import { Watch } from "@/data/watches";
 
@@ -27,27 +28,51 @@ const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
           {/* Image Section */}
-          <div className="relative">
-            <div className="aspect-square overflow-hidden rounded-lg bg-luxury-cream">
-              <img 
-                src={watch.image} 
-                alt={`${watch.brand} ${watch.name}`}
-                className="w-full h-full object-cover"
-              />
+          <div className="space-y-4">
+            {/* Main Image */}
+            <div className="relative">
+              <div className="aspect-square overflow-hidden rounded-lg bg-luxury-cream">
+                <img 
+                  src={watch.image} 
+                  alt={`${watch.brand} ${watch.name}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              {/* Badges */}
+              <div className="absolute top-4 left-4 flex flex-col gap-2">
+                {watch.isNew && (
+                  <Badge className="bg-luxury-gold text-luxury-dark font-medium">
+                    NEW
+                  </Badge>
+                )}
+                {watch.isOnSale && (
+                  <Badge className="bg-destructive text-destructive-foreground font-medium">
+                    SALE
+                  </Badge>
+                )}
+              </div>
             </div>
-            
-            {/* Badges */}
-            <div className="absolute top-4 left-4 flex flex-col gap-2">
-              {watch.isNew && (
-                <Badge className="bg-luxury-gold text-luxury-dark font-medium">
-                  NEW
-                </Badge>
-              )}
-              {watch.isOnSale && (
-                <Badge className="bg-destructive text-destructive-foreground font-medium">
-                  SALE
-                </Badge>
-              )}
+
+            {/* Additional Images Slider */}
+            <div className="px-8">
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {watch.images.map((image, index) => (
+                    <CarouselItem key={index} className="basis-1/3">
+                      <div className="aspect-square overflow-hidden rounded-md bg-luxury-cream cursor-pointer hover:opacity-80 transition-opacity">
+                        <img 
+                          src={image} 
+                          alt={`${watch.brand} ${watch.name} view ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
             </div>
           </div>
 

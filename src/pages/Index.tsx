@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import FilterBar from "@/components/FilterBar";
 import WatchCard from "@/components/WatchCard";
 import WatchDialog from "@/components/WatchDialog";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { watches, categories, Watch } from "@/data/watches";
 import { useToast } from "@/hooks/use-toast";
 
@@ -73,6 +74,43 @@ const Index = () => {
       />
       
       <Hero />
+
+      {/* Featured Watches Slider */}
+      <section className="container mx-auto px-4 py-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-luxury-dark mb-4">Featured Timepieces</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Discover our curated selection of exceptional watches, each representing the pinnacle of craftsmanship and design
+          </p>
+        </div>
+        
+        <div className="px-8">
+          <Carousel className="w-full">
+            <CarouselContent>
+              {watches.slice(0, 4).map((watch) => (
+                <CarouselItem key={watch.id} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-2">
+                    <WatchCard
+                      id={watch.id}
+                      name={watch.name}
+                      brand={watch.brand}
+                      price={watch.price}
+                      originalPrice={watch.originalPrice}
+                      image={watch.image}
+                      category={watch.category}
+                      isNew={watch.isNew}
+                      isOnSale={watch.isOnSale}
+                      onClick={() => handleWatchClick(watch)}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      </section>
       
       <FilterBar
         categories={categories}
