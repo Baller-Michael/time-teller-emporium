@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 interface HeaderProps {
   onSearchChange: (query: string) => void;
   onMenuClick?: () => void;
+  onNavigate?: (section: string) => void;
 }
 
-const Header = ({ onSearchChange, onMenuClick }: HeaderProps) => {
+const Header = ({ onSearchChange, onMenuClick, onNavigate }: HeaderProps) => {
   return (
     <header className="bg-gradient-hero shadow-luxury sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -37,18 +38,30 @@ const Header = ({ onSearchChange, onMenuClick }: HeaderProps) => {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center space-x-6">
-            <a href="#" className="text-primary-foreground hover:text-luxury-gold transition-colors">
+            <button 
+              onClick={() => onNavigate?.('collections')} 
+              className="text-primary-foreground hover:text-luxury-gold transition-colors"
+            >
               Collections
-            </a>
-            <a href="#" className="text-primary-foreground hover:text-luxury-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => onNavigate?.('brands')} 
+              className="text-primary-foreground hover:text-luxury-gold transition-colors"
+            >
               Brands
-            </a>
-            <a href="#" className="text-primary-foreground hover:text-luxury-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => onNavigate?.('about')} 
+              className="text-primary-foreground hover:text-luxury-gold transition-colors"
+            >
               About
-            </a>
-            <a href="#" className="text-primary-foreground hover:text-luxury-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => onNavigate?.('contact')} 
+              className="text-primary-foreground hover:text-luxury-gold transition-colors"
+            >
               Contact
-            </a>
+            </button>
           </nav>
 
           {/* Actions */}

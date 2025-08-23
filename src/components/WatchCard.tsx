@@ -13,6 +13,7 @@ interface WatchCardProps {
   category: string;
   isNew?: boolean;
   isOnSale?: boolean;
+  onClick?: () => void;
 }
 
 const WatchCard = ({ 
@@ -24,10 +25,11 @@ const WatchCard = ({
   image, 
   category, 
   isNew, 
-  isOnSale 
+  isOnSale,
+  onClick 
 }: WatchCardProps) => {
   return (
-    <Card className="group overflow-hidden bg-card shadow-card hover:shadow-luxury transition-all duration-300 hover:-translate-y-1">
+    <Card className="group overflow-hidden bg-card shadow-card hover:shadow-luxury transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={onClick}>
       <div className="relative aspect-square overflow-hidden bg-luxury-cream">
         <img 
           src={image} 
