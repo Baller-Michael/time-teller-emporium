@@ -44,8 +44,14 @@ const WatchCard = ({
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-2 h-6 w-6 opacity-0 group-hover:opacity-100" />
-          <CarouselNext className="right-2 h-6 w-6 opacity-0 group-hover:opacity-100" />
+          <CarouselPrevious 
+            className="left-2 h-6 w-6 opacity-0 group-hover:opacity-100" 
+            onClick={(e) => e.stopPropagation()} 
+          />
+          <CarouselNext 
+            className="right-2 h-6 w-6 opacity-0 group-hover:opacity-100" 
+            onClick={(e) => e.stopPropagation()} 
+          />
         </Carousel>
         
         {/* Badges */}

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Heart, ShoppingCart } from "lucide-react";
 import { Watch } from "@/data/watches";
+import { useState } from "react";
 
 interface WatchDialogProps {
   watch: Watch | null;
@@ -12,6 +13,8 @@ interface WatchDialogProps {
 }
 
 const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  
   if (!watch) return null;
 
   return (
@@ -33,7 +36,7 @@ const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
             <div className="relative">
               <div className="aspect-square overflow-hidden rounded-lg bg-luxury-cream">
                 <img 
-                  src={watch.image} 
+                  src={watch.images[selectedImageIndex]} 
                   alt={`${watch.brand} ${watch.name}`}
                   className="w-full h-full object-cover"
                 />
@@ -60,7 +63,12 @@ const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
                 <CarouselContent>
                   {watch.images.map((image, index) => (
                     <CarouselItem key={index} className="basis-1/3">
-                      <div className="aspect-square overflow-hidden rounded-md bg-luxury-cream cursor-pointer hover:opacity-80 transition-opacity">
+                      <div 
+                        className={`aspect-square overflow-hidden rounded-md bg-luxury-cream cursor-pointer hover:opacity-80 transition-all ${
+                          selectedImageIndex === index ? 'ring-2 ring-luxury-gold' : ''
+                        }`}
+                        onClick={() => setSelectedImageIndex(index)}
+                      >
                         <img 
                           src={image} 
                           alt={`${watch.brand} ${watch.name} view ${index + 1}`}
