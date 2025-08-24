@@ -2,6 +2,7 @@ import { Heart, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 interface WatchCardProps {
   id: string;
@@ -9,7 +10,7 @@ interface WatchCardProps {
   brand: string;
   price: number;
   originalPrice?: number;
-  image: string;
+  images: string[];
   category: string;
   isNew?: boolean;
   isOnSale?: boolean;
@@ -22,7 +23,7 @@ const WatchCard = ({
   brand, 
   price, 
   originalPrice, 
-  image, 
+  images, 
   category, 
   isNew, 
   isOnSale,
@@ -31,14 +32,24 @@ const WatchCard = ({
   return (
     <Card className="group overflow-hidden bg-card shadow-card hover:shadow-luxury transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={onClick}>
       <div className="relative aspect-square overflow-hidden bg-luxury-cream">
-        <img 
-          src={image} 
-          alt={`${brand} ${name}`}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        <Carousel className="w-full h-full">
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <img 
+                  src={image} 
+                  alt={`${brand} ${name} view ${index + 1}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-2 h-6 w-6 opacity-0 group-hover:opacity-100" />
+          <CarouselNext className="right-2 h-6 w-6 opacity-0 group-hover:opacity-100" />
+        </Carousel>
         
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
           {isNew && (
             <Badge className="bg-luxury-gold text-luxury-dark font-medium">
               NEW
@@ -55,13 +66,13 @@ const WatchCard = ({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-3 right-3 bg-background/80 hover:bg-background text-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          className="absolute top-3 right-3 bg-background/80 hover:bg-background text-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
         >
           <Heart className="h-4 w-4" />
         </Button>
 
         {/* Quick add to cart - appears on hover */}
-        <div className="absolute bottom-3 left-3 right-3 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute bottom-3 left-3 right-3 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
           <Button className="w-full bg-luxury-dark hover:bg-luxury-gold hover:text-luxury-dark transition-colors">
             <ShoppingCart className="h-4 w-4 mr-2" />
             Add to Cart
