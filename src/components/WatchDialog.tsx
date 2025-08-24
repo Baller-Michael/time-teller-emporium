@@ -1,9 +1,11 @@
+
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from "@/components/ui/carousel";
 import { Heart, ShoppingCart } from "lucide-react";
 import { Watch } from "@/data/watches";
+import { useState, useEffect } from "react";
 
 interface WatchDialogProps {
   watch: Watch | null;
@@ -12,6 +14,29 @@ interface WatchDialogProps {
 }
 
 const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [mainCarouselApi, setMainCarouselApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!mainCarouselApi) return;
+
+    const onSelect = () => {
+      setSelectedImageIndex(mainCarouselApi.selectedScrollSnap());
+    };
+
+    mainCarouselApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      mainCarouselApi.off("select", onSelect);
+    };
+  }, [mainCarouselApi]);
+
+  const handleThumbnailClick = (index: number) => {
+    setSelectedImageIndex(index);
+    mainCarouselApi?.scrollTo(index);
+  };
+
   if (!watch) return null;
 
   return (
@@ -31,7 +56,7 @@ const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
           <div className="space-y-4">
             {/* Main Image */}
             <div className="relative">
-              <Carousel className="w-full">
+              <Carousel className="w-full" setApi={setMainCarouselApi}>
                 <CarouselContent>
                   {watch.images.map((image, index) => (
                     <CarouselItem key={index}>
@@ -70,7 +95,12 @@ const WatchDialog = ({ watch, open, onOpenChange }: WatchDialogProps) => {
                 <CarouselContent>
                   {watch.images.map((image, index) => (
                     <CarouselItem key={index} className="basis-1/3">
-                      <div className="aspect-square overflow-hidden rounded-md bg-luxury-cream cursor-pointer hover:opacity-80 transition-opacity">
+                      <div 
+                        className={`aspect-square overflow-hidden rounded-md bg-luxury-cream cursor-pointer hover:opacity-80 transition-all ${
+                          selectedImageIndex === index ? 'ring-2 ring-luxury-gold' : ''
+                        }`}
+                        onClick={() => handleThumbnailClick(index)}
+                      >
                         <img 
                           src={image} 
                           alt={`${watch.brand} ${watch.name} view ${index + 1}`}
