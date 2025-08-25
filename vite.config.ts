@@ -8,7 +8,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-  },
+  }, 
+  base: '/time-teller-emporium/',
   plugins: [
     react(),
     mode === 'development' &&
